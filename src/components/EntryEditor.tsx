@@ -208,7 +208,7 @@ function EntryRow({
             className="ml-1"
             style={{ background: lang.color ?? "transparent" }}
           >
-            {lang.id}
+            {lang.native ? "Native" : lang.level}
           </Badge>
         </div>
         <div className="flex items-center gap-2">

@@ -8,6 +8,8 @@ import { Badge } from "./ui/badge";
 import { db } from "../../config/firebase";
 import { Language, Entry } from "../../lib/types";
 import { motion, AnimatePresence } from "framer-motion";
+import EffortScale from "./EffortScale";
+import { effortBg, effortLabel } from "@/lib/effort";
 
 const todayStr = () => format(new Date(), "yyyy-MM-dd");
 
@@ -56,7 +58,7 @@ export default function DailyReview() {
     return (
       <Card className="zen neu">
         <CardHeader>
-          <CardTitle>Daily Review — {todayStr()}</CardTitle>
+          <CardTitle>What I have done today... — {todayStr()}</CardTitle>
         </CardHeader>
         <CardContent className="grid sm:grid-cols-3 gap-4">
           {[0, 1, 2].map((i) => (
@@ -74,7 +76,7 @@ export default function DailyReview() {
     <div className="grid md:grid-cols-3 gap-5 items-stretch">
       <Card className="md:col-span-3 zen neu">
         <CardHeader>
-          <CardTitle>Daily Review — {todayStr()}</CardTitle>
+          <CardTitle>What I have done today... {todayStr()}</CardTitle>
         </CardHeader>
         <CardContent className="grid sm:grid-cols-3 gap-4">
           <div className="neu-inset p-4 min-h-[92px]">
@@ -100,6 +102,7 @@ export default function DailyReview() {
             </div>
           </div>
         </CardContent>
+        <EffortScale compact />
       </Card>
 
       <AnimatePresence initial={false}>
@@ -131,14 +134,18 @@ export default function DailyReview() {
                     <CardTitle className="flex items-center gap-2">
                       <span className="text-xl">{lang?.emoji ?? "🌍"}</span>
                       <span>{lang?.name ?? "Unknown language"}</span>
-                      <Badge
-                        className="ml-auto"
-                        style={{
-                          backgroundColor: lang?.color ?? "transparent",
-                        }}
+                      <span
+                        className={`ml-auto inline-flex items-center gap-2 rounded-full px-2 py-1 text-xs ${effortBg(
+                          (e.effort as any) || 3
+                        )}`}
+                        title={`${e.effort} — ${
+                          effortLabel[(e.effort as any) || 3]
+                        }`}
                       >
-                        {e.minutes} min • Effort {e.effort}
-                      </Badge>
+                        <span className="font-medium">{e.minutes} min</span>
+                        <span>•</span>
+                        <span>{effortLabel[(e.effort as any) || 3]}</span>
+                      </span>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>

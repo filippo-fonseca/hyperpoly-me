@@ -31,7 +31,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <NavBar />
-          <main className="mx-auto max-w-5xl px-4 py-6">{children}</main>
+          <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
           <footer className="mx-auto max-w-5xl px-4 pb-10 pt-6 text-xs text-muted">
             © {new Date().getFullYear()} hyperpoly.me
           </footer>

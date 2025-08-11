@@ -3,6 +3,9 @@ export type Language = {
     name: string;         // e.g., "Português"
     emoji?: string;       // e.g., "🇧🇷"
     color?: string;       // optional hex for badges
+    level?: string;
+    isLearning?: string;
+    native?: boolean;
   };
   
   export type Entry = {
