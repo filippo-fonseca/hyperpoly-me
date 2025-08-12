@@ -27,13 +27,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <AuthProvider>
           <NavBar />
-          <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
-          <footer className="mx-auto max-w-5xl px-4 pb-10 pt-6 text-xs text-muted">
-            © {new Date().getFullYear()} hyperpoly.me
+          {/* main grows to fill space */}
+          <main className="mx-auto max-w-7xl px-4 py-6 flex-1">{children}</main>
+
+          {/* footer sticks to bottom if content is short */}
+          <footer className="mx-auto max-w-7xl px-4 pb-10 pt-6 text-xs text-black text-center mt-auto">
+            © {new Date().getFullYear()} Filippo Fonseca. Made with ❤️.
           </footer>
         </AuthProvider>
       </body>

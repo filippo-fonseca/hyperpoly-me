@@ -15,7 +15,7 @@ export default function EffortScale({
     <div className="rounded-lg border border-border bg-background/70">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between px-3 py-2 text-left"
+        className="w-full flex items-center justify-between px-3 py-2 text-left cursor-pointer hover:scale-[1.02] transition-all"
         aria-expanded={open}
       >
         <div className="text-sm font-medium">Effort scale (1–5)</div>

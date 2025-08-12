@@ -9,7 +9,7 @@ export const effortLabel: Record<Effort, string> = {
 };
 
 export const effortHelp: Record<Effort, string> = {
-  1: "Passive: podcasts, background listening, light review.",
+  1: "Passive: podcasts, YouTube, background listening, etc.",
   2: "Light: low-friction input or short practice.",
   3: "Focused: deliberate practice with attention.",
   4: "Intense: challenging drills, output-heavy work.",

@@ -10,7 +10,7 @@ export default function NavBar() {
 
   return (
     <header className="sticky top-0 z-20 bg-surface/80 backdrop-blur-lg border-b border-surface">
-      <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+      <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
         <Link
           href="/"
           className="font-semibold tracking-tight text-lg text-primary"
@@ -23,6 +23,12 @@ export default function NavBar() {
             className="text-sm text-muted-foreground hover:text-primary transition-colors"
           >
             Home
+          </Link>
+          <Link
+            href="/all"
+            className="text-sm text-muted-foreground hover:text-primary transition-colors"
+          >
+            All-time log
           </Link>
           {isAdmin && (
             <Link

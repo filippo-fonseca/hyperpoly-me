@@ -1,7 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import {
+  ReactNode,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
@@ -22,6 +29,13 @@ import {
 import Image from "next/image";
 import EffortScale from "./EffortScale";
 import { effortLabel } from "@/lib/effort";
+import { EffortBadge } from "./DailyReview";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
 
 /** ──────────────────────────────────────────────────────────
  *  Social links (leave empty to hide)
@@ -264,9 +278,11 @@ export default function PublicIntro() {
         </div>
 
         <p className="text-sm md:text-[15px] text-muted-foreground/90 mt-2">
-          A public, minimalist log of my journey with the beautiful realm of
-          languages. Welcome! I hope this gives you some insight into how I
-          operate. Please do{" "}
+          Hi! I'm Filippo, a 19 y/o mechatronics engineer and machine learning
+          researcher studying at Yale. This is my public, hopefully minimalist
+          log of my journey within the beautiful realm of languages and
+          polyglottism as a hobby. Welcome! I hope this gives you some insight
+          into how I operate. Please do{" "}
           <Link
             href="mailto:filippo.fonseca@yale.edu"
             className="text-black underline hover:font-bold transition-all"
@@ -282,7 +298,7 @@ export default function PublicIntro() {
             size="sm"
             onClick={() => setAboutOpen((v) => !v)}
             aria-expanded={aboutOpen}
-            className="gap-2"
+            className="gap-2 cursor-pointer hover:scale-[1.02] transition-all"
           >
             <Info className="h-4 w-4" />
             {aboutOpen ? "Hide About" : "About me & this project"}
@@ -291,7 +307,7 @@ export default function PublicIntro() {
           <Button
             variant="ghost"
             size="sm"
-            className="gap-2"
+            className="gap-2 cursor-pointer hover:scale-[1.02] transition-all"
             onClick={() => setVideoOpen(true)}
           >
             <PlayCircle className="h-4 w-4" />
@@ -313,10 +329,44 @@ export default function PublicIntro() {
             >
               <div className="rounded-lg border border-border bg-background/70 p-4 mb-4 leading-7 text-[15px]">
                 <p className="font-medium mb-3">
-                  Hi, I'm Filippo Fonseca — a 19-year-old mechatronics and
-                  machine learning engineer with an obsession for running and
-                  languages. This journal reflects my journey in language
-                  learning and the systems I build to track progress.
+                  Languages are my favorite tool for connecting with people.
+                  Every new tongue is a new way of thinking, a different lens on
+                  the same world.
+                </p>
+                <p className="mb-3">
+                  I’ve gamified my learning—streaks, effort scores, tiny daily
+                  “quests.” That helped me ramp up quickly, but it also exposed
+                  the hard part: maintaining advanced languages (yes, even the
+                  native ones) while giving the newer ones proper attention.
+                </p>
+                <p className="mb-3">
+                  So I’m borrowing an approach popularized by{" "}
+                  <Link
+                    href="https://www.youtube.com/@LucaLampariello"
+                    target="_blank"
+                    className="underline underline-offset-2 hover:font-semibold"
+                  >
+                    Luca Lampariello
+                  </Link>
+                  : treat languages like children. Some are babies (A0–A1) that
+                  need constant, hands-on time; kids (A2) that thrive on playful
+                  practice; teens (B1) that can roam but still need guidance;
+                  and grown-ups (B2–C2) that mostly need periodic check-ins to
+                  stay sharp.
+                </p>
+                <p className="mb-3">
+                  The strategy is simple: be consistent, do a little every day,
+                  and bias time toward the “younger” languages while lightly
+                  auditing the grown-ups.
+                </p>
+                <p className="mb-3">
+                  I also log publicly. It keeps me honest, surfaces gaps faster,
+                  and celebrates small wins. Each day allows me to make an
+                  "entry" for any given language in my repertoire if I do
+                  anything with it that day (besides menial things or work in my
+                  native languages, ofc). Each entry records minutes, a note,
+                  and a 1–5 scaled effort rating. Progress over perfection. A
+                  little every day goes a long way.
                 </p>
                 <p className="mb-3">
                   Twice a year I record a{" "}
@@ -324,40 +374,33 @@ export default function PublicIntro() {
                     onClick={() => setVideoOpen(true)}
                     className="underline underline-offset-2 hover:font-semibold"
                   >
-                    6-month “all-languages” check-in
+                    full check-in video
                   </button>
-                  , speaking in every language I’m learning to keep myself
-                  honest and celebrate growth. Watch the{" "}
+                  , speaking in every language. You can watch the{" "}
                   <Link
                     href={MOST_RECENT_CHECKIN_VIDEO}
                     target="_blank"
                     className="underline underline-offset-2 hover:font-semibold"
                   >
-                    most recent video
+                    latest one here
                   </Link>
                   .
                 </p>
-                <p>
-                  I log daily study across multiple languages because I believe
-                  in the power of consistent, deliberate practice. Each entry
-                  includes a short note, minutes studied, and a 1–5 effort
-                  rating. The goal is to maintain honesty with myself about the
-                  process, not to chase perfection.
-                </p>
-                <ul className="list-disc pl-5 mt-3 space-y-1">
-                  <li>
-                    <span className="font-medium">Engineering Mindset:</span>{" "}
-                    treat each language like a system to be reverse-engineered.
-                  </li>
-                  <li>
-                    <span className="font-medium">Runner's Discipline:</span>{" "}
-                    show up daily, even when progress is invisible.
-                  </li>
+                A recap:
+                <ul className="list-disc pl-5 mt-2 space-y-1">
                   <li>
                     <span className="font-medium">
-                      Machine Learning Perspective:
+                      Consistency over intensity:
                     </span>{" "}
-                    draw inspiration from how neural nets acquire language.
+                    tiny reps compound.
+                  </li>
+                  <li>
+                    <span className="font-medium">A focus on the “youth”:</span>{" "}
+                    youngest/hardest languages get the most attention.
+                  </li>
+                  <li>
+                    <span className="font-medium">Audit the “adults”:</span>{" "}
+                    periodic maintenance to prevent slippage.
                   </li>
                 </ul>
               </div>
@@ -376,15 +419,10 @@ export default function PublicIntro() {
             value={loading ? "—" : stats.totalMinutes}
           />
           <StatCard
-            label="Avg effort (session type)"
-            value={
-              loading
-                ? "—"
-                : `${stats.avgEffort.toFixed(2)} • ${
-                    effortLabel[roundedEffort] || ""
-                  }`
-            }
+            label="Avg effort"
+            value={loading ? "—" : <EffortBadge avg={stats.avgEffort} />}
           />
+
           <StatCard
             label="Days logged"
             value={loading ? "—" : stats.uniqueDates}
@@ -406,43 +444,43 @@ export default function PublicIntro() {
             langs={natives}
           />
         </div> */}
-
-        {/* Maturity buckets */}
-        <div className="mt-6 grid md:grid-cols-2 gap-6">
-          <LangGroup
-            title="Grown-ups (B2/C1/C2)"
-            subtitle="They can fend for themselves — just keep them nourished."
+        {/* Tree view: Native as root, others as branches */}
+        <div className="mt-6">
+          <LangTree
+            roots={natives}
             loading={loading}
-            langs={grown}
-            pill="grown-up"
-          />
-          <LangGroup
-            title="Teens (B1)"
-            subtitle="Independent in familiar contexts; still need guidance."
-            loading={loading}
-            langs={teens}
-            pill="teen"
-          />
-          <LangGroup
-            title="Kids (A2)"
-            subtitle="Emerging conversations; lots of playtime helps."
-            loading={loading}
-            langs={kids}
-            pill="kid"
-          />
-          <LangGroup
-            title="Babies (A1/Starter)"
-            subtitle="Sounding out syllables; nurture and routine."
-            loading={loading}
-            langs={babies}
-            pill="baby"
-          />
-          <LangGroup
-            title="Newborns (no level yet)"
-            subtitle="Just arrived — name picked, crib assembled."
-            loading={loading}
-            langs={newborns}
-            pill="newborn"
+            groups={[
+              {
+                key: "grown",
+                title: "Grown-ups (B2/C1/C2)",
+                subtitle:
+                  "They can fend for themselves — just keep them nourished.",
+                pill: "grown-up",
+                langs: grown,
+              },
+              {
+                key: "teens",
+                title: "Teens (B1)",
+                subtitle:
+                  "Independent in familiar contexts; still need guidance.",
+                pill: "teen",
+                langs: teens,
+              },
+              {
+                key: "kids",
+                title: "Kids (A2)",
+                subtitle: "Emerging conversations; lots of playtime helps.",
+                pill: "kid",
+                langs: kids,
+              },
+              {
+                key: "babies",
+                title: "Babies (A1/Starter)",
+                subtitle: "Sounding out syllables; nurture and routine.",
+                pill: "baby",
+                langs: babies,
+              },
+            ]}
           />
         </div>
       </CardContent>
@@ -501,11 +539,16 @@ export default function PublicIntro() {
 
 /* ───────────── helpers ───────────── */
 
-function StatCard({ label, value }: { label: string; value: string | number }) {
+function StatCard({ label, value }: { label: string; value: ReactNode }) {
+  const isText = typeof value === "string" || typeof value === "number";
   return (
     <div className="neu-inset p-4 min-h-[92px] flex flex-col justify-center">
       <div className="text-[11px] text-muted-foreground">{label}</div>
-      <div className="text-2xl font-semibold mt-1">{value}</div>
+      {isText ? (
+        <div className="text-2xl font-semibold mt-1">{value}</div>
+      ) : (
+        <div className="mt-1">{value}</div>
+      )}
     </div>
   );
 }
@@ -562,28 +605,51 @@ function LangChip({ lang }: { lang: any }) {
   const bucket = bucketOf(lang);
   const tag = lang?.native ? "native" : lang?.level ?? maturityLabel(bucket);
 
-  return (
+  // Compact chip (no visible name). Tooltip reveals the full language name.
+  const ChipInner = (
     <span
-      className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm border border-border bg-background/70"
-      title={lang?.name}
+      className="cursor-pointer inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm border border-border bg-background/70 max-w-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-ring/50 hover:scale-[1.02] transitional-all"
+      // remove native title attr so we only use the styled tooltip
+      aria-label={lang?.name ?? "Language"}
+      tabIndex={0} // keyboard focusable for tooltip
     >
-      <span className="text-base">{lang?.emoji ?? "🌍"}</span>
-      <span className="font-medium">{lang?.name}</span>
-
+      <span className="text-base shrink-0">{lang?.emoji ?? "🌍"}</span>
       <Badge
-        className="ml-1 capitalize"
-        style={{
-          backgroundColor: lang?.color ?? undefined,
-        }}
+        className="ml-1 capitalize shrink-0"
+        style={{ backgroundColor: lang?.color ?? undefined }}
       >
         {String(tag).toLowerCase()}
       </Badge>
       {lang?.isLearning && (
-        <span className="text-[11px] text-muted-foreground ml-1">
+        <span className="text-[11px] text-muted-foreground ml-1 shrink-0">
           (learning)
         </span>
       )}
     </span>
+  );
+
+  return (
+    <TooltipProvider delayDuration={80}>
+      <Tooltip>
+        <TooltipTrigger asChild>{ChipInner}</TooltipTrigger>
+        <TooltipContent side="top" align="center">
+          <div className="flex items-center gap-2">
+            <span className="text-base">{lang?.emoji ?? "🌍"}</span>
+            <span className="font-medium">
+              {lang?.name ?? "Unknown language"}
+            </span>
+            {tag && (
+              <Badge
+                className="ml-1 capitalize"
+                style={{ backgroundColor: lang?.color ?? undefined }}
+              >
+                {String(tag).toLowerCase()}
+              </Badge>
+            )}
+          </div>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
@@ -606,5 +672,288 @@ function SocialIcon({
     >
       {children}
     </Link>
+  );
+}
+
+function LangTree({
+  roots,
+  groups,
+  loading,
+}: {
+  roots: Language[];
+  groups: {
+    key: string;
+    title: string;
+    subtitle?: string;
+    pill?: string;
+    langs: Language[];
+  }[];
+  loading: boolean;
+}) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const bucketRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [xsPct, setXsPct] = useState<number[]>([]); // centers of each bucket, in %
+
+  const setBucketRef = (idx: number) => (el: HTMLDivElement | null) => {
+    bucketRefs.current[idx] = el;
+  };
+
+  // Measure on mount, resize, and layout changes
+  useLayoutEffect(() => {
+    const compute = () => {
+      const root = containerRef.current;
+      if (!root) return;
+      const rootRect = root.getBoundingClientRect();
+      const xs = groups.map((_, i) => {
+        const el = bucketRefs.current[i];
+        if (!el) return 50;
+        const r = el.getBoundingClientRect();
+        const center = (r.left + r.right) / 2;
+        const pct = ((center - rootRect.left) / rootRect.width) * 100;
+        return Math.max(2, Math.min(98, pct)); // clamp a bit from edges
+      });
+      setXsPct(xs);
+    };
+
+    compute();
+
+    const ro = new ResizeObserver(() => compute());
+    if (containerRef.current) ro.observe(containerRef.current);
+    bucketRefs.current.forEach((el) => el && ro.observe(el));
+    window.addEventListener("resize", compute);
+
+    return () => {
+      window.removeEventListener("resize", compute);
+      ro.disconnect();
+    };
+  }, [groups.length]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative rounded-xl border border-border bg-background/60 p-4 overflow-hidden"
+    >
+      {/* Root (Native) */}
+      <div className="surface rounded-xl p-3 md:p-4">
+        <div className="flex items-baseline justify-between mb-1.5">
+          <div>
+            <div className="text-[13px] md:text-sm font-semibold">Native</div>
+            <div className="text-[11px] md:text-xs text-muted-foreground mt-0.5">
+              Mother tongues — forever home base
+            </div>
+          </div>
+          {roots?.length > 0 && (
+            <Badge variant="secondary" className="text-[10px] md:text-[11px]">
+              native
+            </Badge>
+          )}
+        </div>
+
+        {loading && (
+          <div className="h-8 rounded-md bg-background/60 animate-pulse" />
+        )}
+        {!loading && (roots?.length ?? 0) === 0 && (
+          <div className="text-sm text-muted-foreground">
+            No native languages set.
+          </div>
+        )}
+        {!loading && roots?.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {roots.map((l) => (
+              <LangChip key={(l as any).id ?? (l as any).name} lang={l} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Bigger gap to spread branches */}
+      <div className="h-8 md:h-10" />
+
+      {/* Connector */}
+      <TreeConnectorSVG xsPct={xsPct} />
+
+      {/* Buckets */}
+      <div className="mt-8 grid gap-3 md:gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 min-w-0">
+        {groups.map((g, i) => (
+          <div
+            key={g.key}
+            ref={setBucketRef(i)}
+            className="surface rounded-lg p-3 md:p-4 relative min-w-0 overflow-hidden"
+          >
+            <div className="flex items-baseline justify-between mb-1.5">
+              <div>
+                <div className="text-[12px] md:text-sm font-semibold">
+                  {g.title}
+                </div>
+                {g.subtitle && (
+                  <div className="text-[11px] md:text-xs text-muted-foreground mt-0.5">
+                    {g.subtitle}
+                  </div>
+                )}
+              </div>
+              {/* {g.pill && g.langs?.length > 0 && (
+                <Badge
+                  variant="secondary"
+                  className="text-[10px] md:text-[11px]"
+                >
+                  {g.pill}
+                </Badge>
+              )} */}
+            </div>
+
+            {loading && (
+              <div className="h-8 rounded-md bg-background/60 animate-pulse" />
+            )}
+            {!loading && (g.langs?.length ?? 0) === 0 && (
+              <div className="text-sm text-muted-foreground">
+                Nothing here yet.
+              </div>
+            )}
+            {!loading && g.langs?.length > 0 && (
+              <motion.div
+                layout
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.18 }}
+                className="flex flex-wrap gap-1.5"
+              >
+                {g.langs.map((l) => (
+                  <LangChip key={(l as any).id ?? (l as any).name} lang={l} />
+                ))}
+              </motion.div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TreeConnectorSVG({ xsPct }: { xsPct: number[] }) {
+  // Taller connector with wider fan-out
+  const H = 110; // overall height of connector svg
+  const splitY = 30; // where trunk splits into branches
+  const endY = H; // branch end y
+  const cp1y = splitY + 18;
+  const cp2y = splitY + 32;
+
+  return (
+    <div className="relative pointer-events-none -mx-2">
+      <svg
+        className="block w-[calc(100%+16px)] h-[110px] md:h-[120px] mx-2"
+        viewBox={`0 0 100 ${H}`}
+        preserveAspectRatio="none"
+        aria-hidden
+      >
+        <defs>
+          {/* soft glow for the spark */}
+          <filter id="spark-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1.2" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* --- BASE LINES (static, subtle) --- */}
+        {/* trunk */}
+        <path
+          d={`M 50 0 C 50 14, 50 ${splitY - 6}, 50 ${splitY}`}
+          fill="none"
+          stroke="currentColor"
+          className="text-border"
+          strokeWidth="0.8"
+          strokeLinecap="round"
+        />
+        {/* branches */}
+        {xsPct.map((x, i) => {
+          const cp1x = 50 + (x - 50) * 0.28;
+          const cp2x = 50 + (x - 50) * 0.85;
+          return (
+            <path
+              key={`base-${i}`}
+              d={`M 50 ${splitY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${x} ${endY}`}
+              fill="none"
+              stroke="currentColor"
+              className="text-border"
+              strokeWidth="0.8"
+              strokeLinecap="round"
+            />
+          );
+        })}
+
+        {/* --- SPARK OVERLAY (animated) --- */}
+        {/* Set accent color here (inherits to children) */}
+        <g className="text-pink-500/80">
+          {/* trunk spark */}
+          <path
+            d={`M 50 0 C 50 14, 50 ${splitY - 6}, 50 ${splitY}`}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+            pathLength={100}
+            className="electric-spark electric-trunk"
+            filter="url(#spark-glow)"
+          />
+          {/* branch sparks */}
+          {xsPct.map((x, i) => {
+            const cp1x = 50 + (x - 50) * 0.28;
+            const cp2x = 50 + (x - 50) * 0.85;
+            return (
+              <path
+                key={`spark-${i}`}
+                d={`M 50 ${splitY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${x} ${endY}`}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                pathLength={100}
+                className="electric-spark"
+                style={{
+                  // slight stagger so pulses cascade across
+                  animationDelay: `${i * 0.12}s`,
+                }}
+                filter="url(#spark-glow)"
+              />
+            );
+          })}
+        </g>
+      </svg>
+      <style jsx global>{`
+        @keyframes spark-move {
+          0% {
+            stroke-dashoffset: 100;
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          60% {
+            opacity: 1;
+          }
+          100% {
+            stroke-dashoffset: 0;
+            opacity: 0;
+          }
+        }
+
+        /* The animated dash: a short bright segment moving along the path */
+        .electric-spark {
+          /* one visible segment + the rest transparent; values are in "pathLength" units */
+          stroke-dasharray: 12 88;
+          stroke-dashoffset: 100;
+          animation: spark-move 1.1s linear infinite;
+          /* tiny glow fallback if filter isn't supported */
+          filter: drop-shadow(0 0 1px rgba(236, 72, 153, 0.5));
+        }
+
+        /* Make the trunk’s pulse a touch slower so it feels like it’s feeding the branches */
+        .electric-trunk {
+          animation-duration: 1.4s;
+        }
+      `}</style>
+    </div>
   );
 }

@@ -201,7 +201,7 @@ export default function QuickComposer() {
               <Button
                 onClick={submit}
                 disabled={saving || !selected}
-                className="shadow-neumorphic-sm"
+                className="shadow-neumorphic-sm cursor-pointer"
               >
                 {saving ? "Saving…" : "Post entry"}
               </Button>
