@@ -222,7 +222,7 @@ function EntryRow({
 
       <div className="grid md:grid-cols-3 gap-3 mt-4">
         <div className="md:col-span-3">
-          <Label>Content</Label>
+          <Label className="mb-2">Content</Label>
           <Textarea
             placeholder="What did you do today in this language?"
             value={content}
@@ -231,7 +231,7 @@ function EntryRow({
           />
         </div>
         <div>
-          <Label>Minutes</Label>
+          <Label className="mb-2">Minutes</Label>
           <Input
             type="number"
             min={0}
@@ -242,7 +242,7 @@ function EntryRow({
           />
         </div>
         <div>
-          <Label>Effort (1–5)</Label>
+          <Label className="mb-2">Effort (1–5)</Label>
           <select
             value={effort}
             onChange={(e) => setEffort(e.target.value)}

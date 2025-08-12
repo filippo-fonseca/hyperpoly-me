@@ -35,7 +35,7 @@ export default function RootLayout({
           <main className="mx-auto max-w-7xl px-4 py-6 flex-1">{children}</main>
 
           {/* footer sticks to bottom if content is short */}
-          <footer className="mx-auto max-w-7xl px-4 pb-10 pt-6 text-xs text-black text-center mt-auto">
+          <footer className="mx-auto max-w-7xl pb-10 pt-6 text-xs text-black text-center mt-auto">
             © {new Date().getFullYear()} Filippo Fonseca. Made with ❤️.
           </footer>
         </AuthProvider>

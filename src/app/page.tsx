@@ -34,7 +34,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl py-8">
       {/* Top: two columns — PublicIntro (3/5) + DailyReview (2/5) */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 min-h-0">
         <div ref={leftRef} className="lg:col-span-3 min-h-0">

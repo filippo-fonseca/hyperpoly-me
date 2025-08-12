@@ -43,7 +43,7 @@ export default function EffortScale({
                     className="inline-flex h-2.5 w-2.5 rounded-full"
                     style={{ backgroundColor: dot(n) }}
                   />
-                  {n} — {effortLabel[n]}
+                  <span className="font-bold">{n}:</span> {effortLabel[n]}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
                   {effortHelp[n]}

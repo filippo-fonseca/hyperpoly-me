@@ -39,15 +39,26 @@ export default function AdminPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+      {/* Manage languages button */}
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col">
+          <h1 className="text-2xl font-bold">Welcome, you goat.</h1>
+          <p className="text-sm text-gray-700">
+            Consistency shapes what once felt impossible. Rememeber, you are
+            ALWAYS making progress,
+            <br /> even if it's doesn't feel like it all the time. It ALL adds
+            up. Always. Every minute matters. <br /> How you do one thing is how
+            you do everything.{" "}
+          </p>
+        </div>
+        <div className="flex justify-end">
+          <Button variant="outline" onClick={() => setOpenManage(true)}>
+            Manage languages
+          </Button>
+        </div>
+      </div>
       {/* Top composer — quick add like Twitter */}
       <QuickComposer />
-
-      {/* Manage languages button */}
-      <div className="flex justify-end">
-        <Button variant="outline" onClick={() => setOpenManage(true)}>
-          Manage languages
-        </Button>
-      </div>
 
       {/* Full editor (multi-language, activate-to-edit flow) */}
       <EntryEditor />

@@ -298,7 +298,7 @@ export default function PublicIntro() {
             size="sm"
             onClick={() => setAboutOpen((v) => !v)}
             aria-expanded={aboutOpen}
-            className="gap-2 cursor-pointer hover:scale-[1.02] transition-all"
+            className="gap-2 cursor-pointer hover:scale-[1.02] transition-all border-2 border-pink-500"
           >
             <Info className="h-4 w-4" />
             {aboutOpen ? "Hide About" : "About me & this project"}
@@ -620,11 +620,6 @@ function LangChip({ lang }: { lang: any }) {
       >
         {String(tag).toLowerCase()}
       </Badge>
-      {lang?.isLearning && (
-        <span className="text-[11px] text-muted-foreground ml-1 shrink-0">
-          (learning)
-        </span>
-      )}
     </span>
   );
 
@@ -739,7 +734,7 @@ function LangTree({
           <div>
             <div className="text-[13px] md:text-sm font-semibold">Native</div>
             <div className="text-[11px] md:text-xs text-muted-foreground mt-0.5">
-              Mother tongues — forever home base
+              Mother tongues. Forever my home base.
             </div>
           </div>
           {roots?.length > 0 && (
