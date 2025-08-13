@@ -293,7 +293,13 @@ export default function PastDays({
                                         </Badge>
                                       </div>
                                       {e.content?.trim() ? (
-                                        <p className="mt-2 text-[15px] whitespace-pre-wrap leading-7 break-words">
+                                        <p
+                                          className={`mt-2 ${
+                                            isYesterday
+                                              ? "text-[11px]"
+                                              : "text-[15px]"
+                                          } whitespace-pre-wrap break-words`}
+                                        >
                                           {e.content}
                                         </p>
                                       ) : (
