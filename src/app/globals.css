@@ -138,6 +138,10 @@
 }
 
 @layer utilities {
+  .font-louize {
+    font-family: var(--font-louize);
+  }
+  
   /* Zen card hint */
   .zen { border-radius: var(--radius-xl); }
 

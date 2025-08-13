@@ -35,7 +35,7 @@ export default function NavBar() {
   );
 
   return (
-    <header className="sticky top-0 z-20 border-b border-surface/60 bg-surface/80 backdrop-blur-xl">
+    <header className="font-mono sticky top-0 z-20 border-b border-surface/60 bg-surface/80 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-4 py-2.5 flex items-center justify-between">
         <Link
           href="/"

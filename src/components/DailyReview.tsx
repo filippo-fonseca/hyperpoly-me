@@ -10,6 +10,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import EffortScale from "./EffortScale";
 import { effortBg, effortLabel } from "@/lib/effort";
 import PastDays from "./PastDays";
+import { Badge } from "./ui/badge";
+import { bucketOf, maturityLabel } from "./PublicIntro";
 
 const todayStr = () => format(new Date(), "yyyy-MM-dd");
 
@@ -161,6 +163,10 @@ export default function DailyReview({ maxHeightPx }: { maxHeightPx?: number }) {
             ) : (
               entries.map((e, idx) => {
                 const lang = langById.get(e.languageId);
+                const bucket = bucketOf(lang);
+                const tag = lang?.native
+                  ? "native"
+                  : lang?.level ?? maturityLabel(bucket);
                 return (
                   <motion.div
                     key={e.id}
@@ -175,10 +181,18 @@ export default function DailyReview({ maxHeightPx }: { maxHeightPx?: number }) {
                   >
                     <div className="surface rounded-xl p-4">
                       <div className="flex items-center gap-2">
-                        <span className="text-xl">{lang?.emoji ?? "🌍"}</span>
-                        <span className="font-semibold">
-                          {lang?.name ?? "Unknown language"}
-                        </span>
+                        <span className="text-base">{lang?.emoji ?? "🌍"}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold">{lang?.name ?? ""}</span>
+                          <Badge
+                            className="ml-1 capitalize"
+                            style={{
+                              backgroundColor: lang?.color ?? undefined,
+                            }}
+                          >
+                            {String(tag).toLowerCase()}
+                          </Badge>
+                        </div>
                         <span
                           className={`ml-auto inline-flex items-center gap-2 rounded-full px-2 py-1 text-xs ${effortBg(
                             (e.effort as any) || 3

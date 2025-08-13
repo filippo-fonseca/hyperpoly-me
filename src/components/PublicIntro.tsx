@@ -98,7 +98,7 @@ function normalizeCEFR(raw?: CEFR): CEFR | undefined {
 type BucketKey = "native" | "grown" | "teen" | "kid" | "baby" | "unknown";
 
 /** Deduce bucket from language record */
-function bucketOf(lang: any): BucketKey {
+export function bucketOf(lang: any): BucketKey {
   if (lang?.native) return "native";
   const lvl = normalizeCEFR(lang?.level);
 
@@ -111,7 +111,7 @@ function bucketOf(lang: any): BucketKey {
 }
 
 /** Nicely formatted maturity tag */
-function maturityLabel(bucket: BucketKey): string {
+export function maturityLabel(bucket: BucketKey): string {
   switch (bucket) {
     case "grown":
       return "grown-up";
@@ -239,7 +239,7 @@ export default function PublicIntro() {
               />
             </div>
             <div>
-              <CardTitle className="text-[28px] md:text-[32px] font-bold tracking-tight">
+              <CardTitle className="font-mono text-[28px] md:text-[32px] font-bold tracking-tight">
                 hyperpoly
                 <span className="text-foreground/70 font-medium">log</span>
               </CardTitle>
