@@ -36,6 +36,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import RoadmapBlueprint from "./RoadMapBlueprint";
 
 /** ──────────────────────────────────────────────────────────
  *  Social links (leave empty to hide)

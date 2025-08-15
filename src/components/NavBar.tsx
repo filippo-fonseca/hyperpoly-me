@@ -12,6 +12,11 @@ const NAV_ITEMS = [
     label: "All-time log",
     match: (p: string) => p.startsWith("/all"),
   },
+  {
+    href: "/blueprint",
+    label: "What's next",
+    match: (p: string) => p.startsWith("/all"),
+  },
 ];
 
 export default function NavBar() {
